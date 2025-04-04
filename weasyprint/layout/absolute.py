@@ -69,7 +69,12 @@ def absolute_width(box, context, cb_x, cb_y, cb_width, cb_height):
         box.width = shrink_to_fit(context, box, available_width)
         if not ltr:
             translate_box_width = True
-            translate_x = default_translate_x + available_width
+            if box.is_outside_marker:
+                # for most absolute boxes, position is calculated w.r.t. containing Page. This is wrong for outside markers.
+                li = box.outside_marker_li
+                translate_x = li.border_box_x() - box.position_x + li.border_width() + 2 * box.border_width()
+            else:
+                translate_x = default_translate_x + available_width
     elif box.left != 'auto' and box.right != 'auto' and box.width != 'auto':
         width_for_margins = cb_width - (
             box.right + box.left + box.width + paddings_borders)

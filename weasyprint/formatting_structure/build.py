@@ -168,7 +168,7 @@ def element_to_box(element, style_for, get_image_from_uri, base_url,
     marker_boxes = []
     if 'list-item' in style['display']:
         marker_boxes = list(marker_to_box(
-            element, state, style, style_for, get_image_from_uri,
+            element, state, box, style, style_for, get_image_from_uri,
             target_collector, counter_style))
         children.extend(marker_boxes)
 
@@ -285,7 +285,7 @@ def before_after_to_box(element, pseudo_type, state, style_for,
 
     if 'list-item' in display:
         marker_boxes = list(marker_to_box(
-            element, state, style, style_for, get_image_from_uri,
+            element, state, box, style, style_for, get_image_from_uri,
             target_collector, counter_style))
         children.extend(marker_boxes)
 
@@ -304,7 +304,7 @@ def before_after_to_box(element, pseudo_type, state, style_for,
     return [box]
 
 
-def marker_to_box(element, state, parent_style, style_for, get_image_from_uri,
+def marker_to_box(element, state, parent_box, parent_style, style_for, get_image_from_uri,
                   target_collector, counter_style):
     """Yield the box for ::marker pseudo-element if there is one.
 
@@ -359,6 +359,7 @@ def marker_to_box(element, state, parent_style, style_for, get_image_from_uri,
         # See https://drafts.csswg.org/css-pseudo-4/#marker-pseudo
         marker_box.style['position'] = 'absolute'
         marker_box.is_outside_marker = True
+        marker_box.outside_marker_li = parent_box
     else:
         marker_box = boxes.InlineBox.anonymous_from(box, children)
     yield marker_box

@@ -81,6 +81,7 @@ class Box:
     footnote = None
     cached_counter_values = None
     missing_link = None
+    outside_marker_li = None
 
     # Default, overriden on some subclasses
     def all_children(self):
